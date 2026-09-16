@@ -12,8 +12,8 @@ A custom multi-cycle processor developed from ISA and RTL design through automat
 
 | Version | Scope | Source |
 | --- | --- | --- |
-| V1 | Custom ISA, Verilog datapath/control, directed module and CPU tests, Python assembler | [main](https://github.com/Ashish0545/MiniRISC/tree/main) |
-| V2 | SystemVerilog self-checking/reference-model tests, automated regression, FPGA wrapper, synthesis, iCE40 mapping, place-and-route and timing/resource analysis | [v2-development](https://github.com/Ashish0545/MiniRISC/tree/v2-development) |
+| V1 | Custom ISA, Verilog datapath/control, directed module and CPU tests, Python assembler | [main](https://github.com/Ashish0545/MiniRISC-Processor/tree/main) |
+| V2 | SystemVerilog self-checking/reference-model tests, automated regression, FPGA wrapper, synthesis, iCE40 mapping, place-and-route and timing/resource analysis | [v2-development](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development) |
 
 The default branch retains V1 source. **Open `v2-development` for the completed V2 implementation.** V1 notes are historical: their synthesis/timing future-work statements do not describe the current V2 status.
 
@@ -21,10 +21,10 @@ The default branch retains V1 source. **Open `v2-development` for the completed 
 
 | Check | Committed result | Supporting evidence |
 | --- | --- | --- |
-| Selected functional regression | **20 PASS, 0 FAIL**: 9 module + 6 CPU/ISA + 4 SystemVerilog + 1 FPGA-wrapper tests | [Verification summary](https://github.com/Ashish0545/MiniRISC/blob/v2-development/verification/verification_summary.md), [runner](https://github.com/Ashish0545/MiniRISC/blob/v2-development/scripts/run_regression.sh) |
-| Synthesis and routing | Completed for **iCE40HX8K, CT256** | [Implementation summary](https://github.com/Ashish0545/MiniRISC/blob/v2-development/fpga/reports/implementation_summary.md), [Yosys log](https://github.com/Ashish0545/MiniRISC/blob/v2-development/fpga/reports/yosys_synthesis.log) |
-| Post-route timing | **53.39 MHz estimated Fmax; PASS at 50 MHz** | [nextpnr log](https://github.com/Ashish0545/MiniRISC/blob/v2-development/fpga/reports/nextpnr_place_route.log) |
-| Device utilisation | **4,631/7,680 logic cells (~60%); 1/32 block RAMs** | [nextpnr utilisation](https://github.com/Ashish0545/MiniRISC/blob/v2-development/fpga/reports/nextpnr_place_route.log) |
+| Selected functional regression | **20 PASS, 0 FAIL**: 9 module + 6 CPU/ISA + 4 SystemVerilog + 1 FPGA-wrapper tests | [Verification summary](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/verification/verification_summary.md),[runner](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/scripts/run_regression.sh) |
+| Synthesis and routing | Completed for **iCE40HX8K, CT256** | [Implementation summary](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/fpga/reports/implementation_summary.md), [Yosys log](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/fpga/reports/yosys_synthesis.log) |
+| Post-route timing | **53.39 MHz estimated Fmax; PASS at 50 MHz** | [nextpnr log](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/fpga/reports/nextpnr_place_route.log) |
+| Device utilisation | **4,631/7,680 logic cells (~60%); 1/32 block RAMs** | [nextpnr utilisation](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/fpga/reports/nextpnr_place_route.log) |
 
 The frequency above is the **final post-route** estimate, not the earlier 55.78 MHz estimate in the same log. It is not a measured hardware clock limit. Automatic I/O placement was used without a board-specific PCF.
 
@@ -50,19 +50,19 @@ flowchart LR
     RF <--> DM[Data memory]
 ```
 
-Conceptual block relationships; see [ISA and architecture](https://github.com/Ashish0545/MiniRISC/blob/v2-development/docs/architecture.md), [CPU RTL](https://github.com/Ashish0545/MiniRISC/blob/v2-development/rtl/minirisc_cpu.v) and [FPGA wrapper](https://github.com/Ashish0545/MiniRISC/blob/v2-development/fpga/rtl/minirisc_fpga_top.v) for implementation detail.
+Conceptual block relationships; see [ISA and architecture](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/docs/architecture.md), [CPU RTL](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/rtl/minirisc_cpu.v) and [FPGA wrapper](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/fpga/rtl/minirisc_fpga_top.v) for implementation detail.
 
 ## Verification flow
 
 Directed module tests → CPU/ISA integration → SystemVerilog ALU checking/reference scoreboard → FPGA-wrapper simulation. The runner compiles with Icarus Verilog, runs each simulation, checks exit status and recognised failure messages, and reports a combined pass/fail count.
 
-[SystemVerilog tests](https://github.com/Ashish0545/MiniRISC/tree/v2-development/verification/tests) include additional experiments beyond the selected 20-test suite. A 20/20 result is a test pass count, not exhaustive ISA or code coverage. The assembler integration test uses a committed generated program; the final runner does not regenerate it with Python.
+[SystemVerilog tests](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/verification/tests) include additional experiments beyond the selected 20-test suite. A 20/20 result is a test pass count, not exhaustive ISA or code coverage. The assembler integration test uses a committed generated program; the final runner does not regenerate it with Python.
 
 ## Implementation flow
 
 Verilog CPU and wrapper → **Yosys `synth_ice40`** → JSON netlist → **nextpnr-ice40** packing, placement and routing → ASC output → timing and utilisation reports.
 
-The [implementation script](https://github.com/Ashish0545/MiniRISC/blob/v2-development/scripts/run_implementation.sh) selects `--hx8k --package ct256 --freq 50 --pcf-allow-unconstrained`. Generic synthesis and structural timing studies are supporting development work; the device-specific routed report above is the evidence for the quoted Fmax.
+The [implementation script](https://github.com/Ashish0545/MiniRISC-Processor/blob/v2-development/scripts/run_implementation.sh) selects `--hx8k --package ct256 --freq 50 --pcf-allow-unconstrained`. Generic synthesis and structural timing studies are supporting development work; the device-specific routed report above is the evidence for the quoted Fmax.
 
 ## Run locally and tools
 
@@ -84,14 +84,14 @@ Links below open V2 unless marked V1.
 
 | Location | What to inspect |
 | --- | --- |
-| [rtl/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/rtl) | Processor blocks and CPU integration |
-| [tb/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/tb) | Directed module and CPU tests |
-| [verification/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/verification) | SystemVerilog tests, historical logs, generators and summary |
-| [scripts/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/scripts) | Final regression and FPGA implementation entry points |
-| [fpga/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/fpga) | Wrappers, integration test, constraint templates and implementation reports |
-| [assembler/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/assembler) and [programs/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/programs) | Python assembler, assembly and memory images |
-| [synthesis/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/synthesis), [timing/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/timing), [optimization/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/optimization) | Earlier generic synthesis and structural optimisation studies |
-| [V1 docs](https://github.com/Ashish0545/MiniRISC/tree/main/docs) | Original architecture, project notes and verification |
+| [rtl/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/rtl) | Processor blocks and CPU integration |
+| [tb/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/tb) | Directed module and CPU tests |
+| [verification/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/verification) | SystemVerilog tests, historical logs, generators and summary |
+| [scripts/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/scripts) | Final regression and FPGA implementation entry points |
+| [fpga/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/fpga) | Wrappers, integration test, constraint templates and implementation reports |
+| [assembler/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/assembler) and [programs/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/programs) | Python assembler, assembly and memory images |
+| [synthesis/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/synthesis), [timing/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/timing), [optimization/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/optimization) | Earlier generic synthesis and structural optimisation studies |
+| [V1 docs](https://github.com/Ashish0545/MiniRISC-Processor/tree/main/docs) | Original architecture, project notes and verification |
 
 ## Limitations and future work
 
