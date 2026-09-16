@@ -1,1 +1,0 @@
-Longest topological path in minirisc_cpu (length=23):
