@@ -69,8 +69,8 @@ The [implementation script](https://github.com/Ashish0545/MiniRISC-Processor/blo
 Install **Icarus Verilog** (`iverilog`, `vvp`) for regression; **Yosys** and **nextpnr-ice40** with iCE40 device support for implementation. Python 3 supports the assembler and program generators. Project IceStorm supports the iCE40 toolchain; Surfer can be used to inspect waveforms.
 
 ```bash
-git clone https://github.com/Ashish0545/MiniRISC.git
-cd MiniRISC
+git clone [https://github.com/Ashish0545/MiniRISC-Processor.git](https://github.com/Ashish0545/MiniRISC-Processor.git)
+cd MiniRISC-Processor
 git switch v2-development
 bash scripts/run_regression.sh
 bash scripts/run_implementation.sh
@@ -90,7 +90,7 @@ Links below open V2 unless marked V1.
 | [scripts/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/scripts) | Final regression and FPGA implementation entry points |
 | [fpga/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/fpga) | Wrappers, integration test, constraint templates and implementation reports |
 | [assembler/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/assembler) and [programs/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/programs) | Python assembler, assembly and memory images |
-| [synthesis/](https://github.com/Ashish0545/MiniRISC/tree/v2-development/synthesis), [timing/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/timing), [optimization/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/optimization) | Earlier generic synthesis and structural optimisation studies |
+| [synthesis/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/synthesis), [timing/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/timing), [optimization/](https://github.com/Ashish0545/MiniRISC-Processor/tree/v2-development/optimization) | Earlier generic synthesis and structural optimisation studies |
 | [V1 docs](https://github.com/Ashish0545/MiniRISC-Processor/tree/main/docs) | Original architecture, project notes and verification |
 
 ## Limitations and future work
@@ -102,3 +102,4 @@ Links below open V2 unless marked V1.
 - Measure board power and external-interface timing when hardware is available.
 
 Completed V2 synthesis, placement/routing and post-route analysis are documented results; physical deployment remains future work.
+s
